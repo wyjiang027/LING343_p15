@@ -1,0 +1,122 @@
+---
+title: "class15_16 bakeoff EDA"
+author: "Wanyu Jiang"
+format: html
+---
+
+```{r}
+install.packages("todor")
+```
+
+```{r}
+options(todor_patterns = c("FIXME", "TODO", "CUSTOM"))
+```
+
+```{r}
+library(tidyverse)
+install.packages("bakeoff")
+library(bakeoff)
+data(package = "bakeoff")
+glimpse(bakers)
+glimpse(bakes_raw)
+```
+
+```{r}
+df_bakers <- bakers |> 
+  mutate(series_fac = as.factor(series), .after = series)
+df_bakers
+df_bakers$series
+df_bakers$series_fac
+
+df_bakers <- df_bakers |> 
+  mutate(baker_fac = as.factor(baker), .after = baker)
+df_bakers$baker_fac
+```
+
+```{r}
+df_bakers |> 
+  filter(str_starts(baker,"D")) |> 
+  ggplot(aes(x = baker_fac)) +
+  geom_bar() +
+  labs(title = "Count of Bakers per Name")
+```
+
+```{r}
+df_bakers <- df_bakers |> 
+  mutate(series_fac2 = factor(series, 
+                              levels = c("2", "4", "6", "8", "10", "1", "3", "5", "7", "9")
+                              ), 
+         .after = baker_fac)
+df_bakers$series_fac2
+```
+
+```{r}
+df_bakers |> 
+  filter(str_starts(baker,"D")) |> 
+  ggplot(aes(x = fct_relevel(baker_fac, c("Deborah", "Dan", "Diana", "David", "Danny",  "Dorret")))) +
+  geom_bar()
+
+df_bakers |> 
+  filter(str_starts(baker,"D")) |> 
+  ggplot(aes(x = fct_infreq(baker_fac))) +
+  geom_bar()
+```
+
+```{r}
+df_bakers <- df_bakers |> 
+  mutate(baker_full_fac = as.factor(baker_full), .after = baker_full)
+df_bakers$baker_full_fac
+
+df_bakers |> 
+  filter(str_starts(baker,"D")) |> 
+  ggplot(aes(x = fct_infreq(baker_full_fac))) +
+  geom_bar()
+```
+
+```{r}
+# Class 16 2024-10-22
+ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day))+
+  geom_col()
+
+ggplot(ratings, aes(x = as.factor(episode), y = viewers_7day))+
+  geom_point()
+```
+
+```{r}
+ratings |> 
+  group_by(episode) |>
+  summarize(total_viewers_7day = sum(viewers_7day)) |> 
+  ggplot(aes(x= as.factor(episode), y = total_viewers_7day, group = 1))+
+  geom_line()
+
+ratings |> 
+  group_by(episode) |>
+  summarize(total_viewers_7day = sum(viewers_7day)) |> 
+  ggplot(aes(x= as.factor(episode), y = total_viewers_7day)) +
+  geom_line()
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
